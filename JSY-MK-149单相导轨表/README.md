@@ -1,5 +1,17 @@
  JSY-MK-149 单相导轨式RS485电能测量仪是深圳市健思研科技有限公司推出的一款本地电能采集模块。
 
+ <h3>JSY-MK-149  单相导轨式RS485电能测量仪</h3>
+            <h4>本地电能采集模块</h4>
+			<div class="shortdesc">
+				<p>1.采集单相交流电参数，包括电压、电流、功率、电能等电参量。<br/>
+2.采用专用测量芯片，有效值测量方式，测量精度高。<br/>
+3.支持无线802.11 b/g/n 标准。<br/>
+4.带1路RS-485通讯接口。<br/>
+5.通信规约采用标准Modbus-RTU,兼容性好，方便编程。<br/>
+6.带ESD保护电路的RS-485通信接口。<br/>
+7.可根据客户要求更改和定制。<br/></p>
+			</div>
+
  <h3 style="height: 42px; color: rgb(33, 133, 197); font-weight: 100; margin-bottom: 25px; border-bottom-color: rgb(102, 102, 102); border-bottom-width: 2px; border-bottom-style: solid; float: left;">
 		产品概述：<span style="margin: 0px 0px 0px 8px; color: rgb(33, 133, 197); text-transform: uppercase; font-family: Arial;">/ Product overview</span> 
 	</h3>
