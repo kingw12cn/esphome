@@ -1,0 +1,159 @@
+esphome:
+  name: "plc-149-meter-modbus"
+
+esp8266:
+  board: nodemcuv2
+
+# Enable logging
+logger:
+  #level: NONE
+  #baud_rate: 0
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "PLC_149_meter Fallback Hotspot"
+    password: !secret fallback_ssid_password
+
+captive_portal:
+    
+uart:
+  rx_pin: GPIO13  #D7
+  tx_pin: GPIO15  #D8
+  baud_rate: 9600
+  stop_bits: 1
+
+modbus:
+  id: modbus1
+  send_wait_time: 5000ms
+
+modbus_controller:
+  - id: PLC_149
+    modbus_id: modbus1
+    address: 0x01 #设备地址码（一般是1根据实际情况填）#
+    command_throttle: 5000ms
+    setup_priority: -10
+    update_interval: 10s
+
+sensor:
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: voltage
+    name: "1.电压"
+    device_class: "voltage"
+    state_class: "measurement"
+    address: 0x48
+    unit_of_measurement: "V" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+  
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: current
+    name: "2.电流"
+    device_class: "current"
+    state_class: "measurement"
+    address: 0x49
+    unit_of_measurement: "A" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
+      
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: active_power
+    name: "3.有功功率"
+    device_class: "power"
+    state_class: "measurement"
+    address: 0x4A
+    unit_of_measurement: "W" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 1
+  
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: active_energy
+    name: "4.正向有功电能"
+    device_class: "energy"
+    state_class: "measurement"
+    address: 0x4B
+    unit_of_measurement: "kWh" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_DWORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.0003125
+      #- offset: 51
+  
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: pfc
+    name: "5.功率因数"
+    device_class: "power_factor"
+    state_class: "measurement"
+    address: 0x4D
+    unit_of_measurement: "" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 3
+    filters:
+      - multiply: 0.001
+
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: reverse_active_energy
+    name: "6.反向有功电能"
+    device_class: "energy"
+    state_class: "measurement"
+    address: 0x4E
+    unit_of_measurement: "kWh" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_DWORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.0003125
+  
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: power_direction
+    name: "7.正反向功率"
+    device_class: "energy"
+    state_class: "measurement"
+    address: 0x50
+    unit_of_measurement: "" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 0
+    filters:
+      - multiply: 1
+    
+  - platform: modbus_controller
+    modbus_controller_id: PLC_149
+    id: freq
+    name: "8.频率"
+    device_class: "voltage"
+    state_class: "measurement"
+    address: 0x51
+    unit_of_measurement: "Hz" ## for any other unit the value is returned in minutes
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 2
+    filters:
+      - multiply: 0.01
